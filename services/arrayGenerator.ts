@@ -1,3 +1,4 @@
+
 import { NDimArray, Point3D } from '../types';
 
 /**
@@ -26,7 +27,8 @@ export const flattenTo3D = (
     for (let i = 0; i < currentPath.length; i++) {
       const axis = i % 3;
       const recursionLevel = Math.floor(i / 3);
-      const scaleFactor = Math.pow(0.42, recursionLevel);
+      // Slightly tighter recursive scaling for a more cohesive look
+      const scaleFactor = Math.pow(0.45, recursionLevel);
       
       // Normalized position from -0.5 to 0.5
       const normalized = (currentPath[i] / (dimSizes[i] - 1 || 1)) - 0.5;
@@ -36,17 +38,22 @@ export const flattenTo3D = (
       if (axis === 2) z += normalized * scaleFactor;
     }
 
+    // Dynamic Spreading: Scale the global coordinates based on dimension size.
+    // If dimSize is small (e.g. 2), the gap is reduced from 45 to ~20.
+    const primarySize = dimSizes[0] || 1;
+    const globalScale = primarySize < 6 ? (primarySize * 7.5) : 45;
+
     // Creative Color Mapping: Color derived from dimension path and local cell value
     const pathSum = currentPath.reduce((acc, v, idx) => acc + v * (idx + 1), 0);
     const hue = (pathSum * 35 + arr * 40) % 360;
-    const saturation = 70 + arr * 30;
-    const lightness = 40 + arr * 30;
+    const saturation = 75 + arr * 25;
+    const lightness = 45 + arr * 25;
 
     return [{
       id: currentPath.join('-'),
-      x: x * 45, // Global coordinate scale
-      y: y * 45,
-      z: z * 45,
+      x: x * globalScale,
+      y: y * globalScale,
+      z: z * globalScale,
       value: arr,
       color: `hsl(${hue}, ${saturation}%, ${lightness}%)`,
       size: 0.15 + (arr * 0.35),

@@ -20,6 +20,7 @@ const i18n = {
     value: '数值',
     path: '索引路径 (坐标系)',
     labels: '数值标签',
+    axes: '维度轴线',
     on: '开启',
     off: '关闭',
     limit: '数据量过大 (>30k)，已自动限制。'
@@ -38,6 +39,7 @@ const i18n = {
     value: 'VALUE',
     path: 'Index Path (Coords)',
     labels: 'World Labels',
+    axes: 'Dimension Axes',
     on: 'ON',
     off: 'OFF',
     limit: 'Volume too large (>30k), limited.'
@@ -52,6 +54,7 @@ const App: React.FC = () => {
   const [hoveredPoint, setHoveredPoint] = useState<Point3D | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showLabels, setShowLabels] = useState<boolean>(false);
+  const [showAxes, setShowAxes] = useState<boolean>(true);
 
   const t = i18n[lang];
 
@@ -78,7 +81,12 @@ const App: React.FC = () => {
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-[#020617] text-slate-100 font-sans">
       <div className="absolute inset-0 z-0">
-        <Visualizer3D points={points} onHover={setHoveredPoint} showLabels={showLabels} />
+        <Visualizer3D 
+          points={points} 
+          onHover={setHoveredPoint} 
+          showLabels={showLabels} 
+          showAxes={showAxes}
+        />
       </div>
 
       {/* Header & Branding */}
@@ -129,7 +137,7 @@ const App: React.FC = () => {
       </div>
 
       {/* Main Controller (Bottom Left) */}
-      <div className="absolute bottom-8 left-8 w-80 z-20 pointer-events-auto flex flex-col gap-4">
+      <div className="absolute bottom-8 left-8 w-84 z-20 pointer-events-auto flex flex-col gap-4">
         <div className="glass p-6 rounded-3xl shadow-2xl space-y-6">
           <div className="space-y-4">
             <div className="space-y-2">
@@ -157,23 +165,30 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 pt-2">
+          <div className="grid grid-cols-2 gap-2 pt-2">
             <button 
               onClick={() => setShowLabels(!showLabels)}
-              className={`flex justify-between items-center px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all border ${showLabels ? 'bg-indigo-500/20 border-indigo-500 text-indigo-300' : 'bg-slate-800/30 border-white/5 text-slate-500 hover:text-white'}`}
+              className={`flex flex-col items-center justify-center p-3 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all border ${showLabels ? 'bg-indigo-500/20 border-indigo-500 text-indigo-300' : 'bg-slate-800/30 border-white/5 text-slate-500 hover:text-white'}`}
             >
               <span>{t.labels}</span>
-              <span className={`px-2 py-0.5 rounded ${showLabels ? 'bg-indigo-500 text-white' : 'bg-slate-700'}`}>{showLabels ? t.on : t.off}</span>
+              <span className="mt-1 opacity-60">{showLabels ? t.on : t.off}</span>
             </button>
-
             <button 
-              onClick={regenerate}
-              disabled={isLoading}
-              className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl active:scale-95"
+              onClick={() => setShowAxes(!showAxes)}
+              className={`flex flex-col items-center justify-center p-3 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all border ${showAxes ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300' : 'bg-slate-800/30 border-white/5 text-slate-500 hover:text-white'}`}
             >
-              {isLoading ? t.calculating : t.regenerate}
+              <span>{t.axes}</span>
+              <span className="mt-1 opacity-60">{showAxes ? t.on : t.off}</span>
             </button>
           </div>
+
+          <button 
+            onClick={regenerate}
+            disabled={isLoading}
+            className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl active:scale-95"
+          >
+            {isLoading ? t.calculating : t.regenerate}
+          </button>
 
           <div className="pt-4 border-t border-white/5 flex justify-between items-center">
             <span className="text-[9px] font-mono text-slate-500 uppercase tracking-wider">{t.status}</span>
