@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Point3D } from './types';
 import { generateNDimArray, flattenTo3D } from './services/arrayGenerator';
@@ -23,7 +24,9 @@ const translations = {
     inspector: '单元格观测',
     value: '数值',
     path: '索引路径',
-    limitMsg: '数据量超过上限 (30k)，请降低维度或大小。'
+    limitMsg: '数据量超过上限 (30k)，请降低维度或大小。',
+    showValues: '显示数值标签',
+    hideValues: '隐藏数值标签'
   },
   en: {
     title: 'N-Dim Visualizer',
@@ -42,7 +45,9 @@ const translations = {
     inspector: 'Cell Inspector',
     value: 'VALUE',
     path: 'Index Path',
-    limitMsg: 'Volume over limit (30k). Please reduce N or Size.'
+    limitMsg: 'Volume over limit (30k). Please reduce N or Size.',
+    showValues: 'Show Numeric Labels',
+    hideValues: 'Hide Numeric Labels'
   }
 };
 
@@ -53,6 +58,7 @@ const App: React.FC = () => {
   const [points, setPoints] = useState<Point3D[]>([]);
   const [hoveredPoint, setHoveredPoint] = useState<Point3D | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showLabels, setShowLabels] = useState<boolean>(false);
 
   const t = translations[lang];
 
@@ -83,7 +89,7 @@ const App: React.FC = () => {
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-[#020617] text-slate-100 flex flex-col">
       <div className="absolute inset-0 z-0">
-        <Visualizer3D points={points} onHover={setHoveredPoint} />
+        <Visualizer3D points={points} onHover={setHoveredPoint} showLabels={showLabels} />
       </div>
 
       {/* Header */}
@@ -162,13 +168,22 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <button 
-            onClick={regenerate}
-            disabled={isLoading}
-            className="group relative w-full py-4 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-indigo-600/20 active:scale-95 overflow-hidden"
-          >
-            <span className="relative z-10">{isLoading ? t.calculating : t.regenerate}</span>
-          </button>
+          <div className="flex flex-col gap-2">
+            <button 
+              onClick={() => setShowLabels(!showLabels)}
+              className={`w-full py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all border ${showLabels ? 'bg-indigo-500/20 border-indigo-500 text-indigo-300' : 'bg-slate-800/50 border-white/5 text-slate-400 hover:text-white'}`}
+            >
+              {showLabels ? t.hideValues : t.showValues}
+            </button>
+
+            <button 
+              onClick={regenerate}
+              disabled={isLoading}
+              className="group relative w-full py-4 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-indigo-600/20 active:scale-95 overflow-hidden"
+            >
+              <span className="relative z-10">{isLoading ? t.calculating : t.regenerate}</span>
+            </button>
+          </div>
 
           <div className="pt-4 border-t border-white/5 flex justify-between items-center">
             <span className="text-[9px] font-mono text-slate-500 uppercase tracking-wider">{t.engineStatus}</span>
