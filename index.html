@@ -4,16 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- SEO Meta Tags -->
-  <title>N-Dimensional Array Visualizer | 多维数组 3D 可视化</title>
-  <meta name="description" content="A high-performance 3D visualization tool for exploring multi-dimensional arrays using recursive spatial mapping. Pure frontend implementation using React and Three.js.">
-  <meta name="keywords" content="N-Dimensional, Data Visualization, Three.js, React, Multi-dimensional Array, 3D Grid, 多维数组, 数据可视化, 递归映射">
-  <meta name="author" content="N-Dim Visualizer">
-  
-  <!-- Open Graph / Social -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="N-Dimensional Array Visualizer">
-  <meta property="og:description" content="Explore complex multi-dimensional data structures in an interactive 3D space.">
+  <title>N-Dimensional Visualizer | 多维空间递归投影引擎</title>
+  <meta name="description" content="Explore complex multi-dimensional data structures in an interactive 3D space using recursive spatial mapping.">
+  <meta name="keywords" content="3D Visualization, N-Dimensional, Data Science, Three.js, React">
   
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -28,27 +21,30 @@
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #0f172a; }
     ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
-
+    
     .glass {
       background: rgba(15, 23, 42, 0.7);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
+    
+    .text-glow {
+      text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+    }
   </style>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "three": "https://esm.sh/three@^0.182.0",
-    "three/": "https://esm.sh/three@^0.182.0/",
-    "vite": "https://esm.sh/vite@^7.3.1"
+  <script type="importmap">
+  {
+    "imports": {
+      "react": "https://esm.sh/react@^19.2.3",
+      "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+      "react/": "https://esm.sh/react@^19.2.3/",
+      "three": "https://esm.sh/three@^0.182.0",
+      "three/": "https://esm.sh/three@^0.182.0/",
+      "vite": "https://esm.sh/vite@^7.3.1"
+    }
   }
-}
-</script>
+  </script>
 </head>
 <body>
   <div id="root"></div>
