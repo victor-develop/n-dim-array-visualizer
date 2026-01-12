@@ -1,0 +1,5 @@
+{
+  "name": "N-Dimensional Array Visualizer",
+  "description": "A high-performance 3D visualization tool for exploring multi-dimensional arrays using recursive spatial mapping. Pure frontend implementation.",
+  "requestFramePermissions": []
+}
